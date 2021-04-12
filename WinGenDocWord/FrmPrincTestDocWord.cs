@@ -78,11 +78,11 @@ namespace WinGenDocWord
             }
 
         }
-
+        /*
         private static CreateTableWord (string pFfName)
         {
 
         }
-
+        */
     }
 }
