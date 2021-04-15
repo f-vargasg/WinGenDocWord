@@ -79,10 +79,66 @@ namespace WinGenDocWord
 
         }
 
-        private static CreateTableWord (string pFfName)
+        private static void CreateDocWordSubstitution (string pTempWordDoc)
         {
+            try
+            {
+                string outputPath = Path.GetDirectoryName(pTempWordDoc);
+                string parrafo = string.Empty;
+                using (FileStream stream = File.OpenRead(pTempWordDoc))
+                {
+                    XWPFDocument doc = new XWPFDocument(stream);
+                    foreach (XWPFParagraph paragraph in doc.Paragraphs)
+                    {
+                        string textParrafo = paragraph.Text;
+                        /*
+                        foreach (XWPFRun run in paragraph.Runs)
+                        {
+                            parrafo = run.GetText(0);
+                            parrafo = parrafo.Replace("<%fecha>}", DateTime.Now.ToString("dd/MM/yyyy"));
+                            parrafo = parrafo.Replace("${name}", "John");
+                            string montoStr = String.Format("{0:0.00;minus 0.00;zero}", 123.4567);
+                            parrafo = parrafo.Replace("${total}", montoStr);
+                            run.SetText(parrafo);
+                        }
+                        */
+                    }
+                    string ffname = Path.Combine(outputPath, "output.docx");
+                    FileStream newFile = new FileStream(ffname, FileMode.Create);
+                    doc.Write(newFile);
+                }
 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
+        private void genFromTemplateBut_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog openFileDlg = new OpenFileDialog();
+                openFileDlg.Title = "Load Ms Word Files";
+                openFileDlg.CheckFileExists = false;
+                openFileDlg.CheckPathExists = true;
+                openFileDlg.DefaultExt = "docx";
+                openFileDlg.Filter = "Text files (*.docx)|*.docx|All files (*.*)|*.*";
+                openFileDlg.FilterIndex = 2;
+                openFileDlg.RestoreDirectory = true;
+                if (openFileDlg.ShowDialog() == DialogResult.OK)
+                {
+                    Console.WriteLine(openFileDlg.FileName);
+                    CreateDocWordSubstitution(openFileDlg.FileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
     }
 }

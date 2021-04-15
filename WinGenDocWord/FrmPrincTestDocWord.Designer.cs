@@ -30,25 +30,37 @@ namespace WinGenDocWord
         private void InitializeComponent()
         {
             this.butDo = new System.Windows.Forms.Button();
+            this.genFromTemplateBut = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // ButDo
+            // butDo
             // 
             this.butDo.Location = new System.Drawing.Point(306, 91);
-            this.butDo.Name = "ButDo";
+            this.butDo.Name = "butDo";
             this.butDo.Size = new System.Drawing.Size(204, 106);
             this.butDo.TabIndex = 0;
             this.butDo.Text = "button1";
             this.butDo.UseVisualStyleBackColor = true;
             this.butDo.Click += new System.EventHandler(this.ButDo_Click);
             // 
-            // Form1
+            // genFromTemplateBut
+            // 
+            this.genFromTemplateBut.Location = new System.Drawing.Point(306, 242);
+            this.genFromTemplateBut.Name = "genFromTemplateBut";
+            this.genFromTemplateBut.Size = new System.Drawing.Size(204, 106);
+            this.genFromTemplateBut.TabIndex = 1;
+            this.genFromTemplateBut.Text = "Gen. Doc From Template";
+            this.genFromTemplateBut.UseVisualStyleBackColor = true;
+            this.genFromTemplateBut.Click += new System.EventHandler(this.genFromTemplateBut_Click);
+            // 
+            // FrmPrincTestDocWord
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(872, 489);
+            this.Controls.Add(this.genFromTemplateBut);
             this.Controls.Add(this.butDo);
-            this.Name = "Form1";
+            this.Name = "FrmPrincTestDocWord";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -58,6 +70,7 @@ namespace WinGenDocWord
         #endregion
 
         private System.Windows.Forms.Button butDo;
+        private System.Windows.Forms.Button genFromTemplateBut;
     }
 }
 
