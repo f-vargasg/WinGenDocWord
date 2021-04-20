@@ -62,7 +62,7 @@ namespace WinGenDocWord
 
                 r1.FontFamily = "Courier";
                 r1.SetUnderline(UnderlinePatterns.DotDotDash);
-                r1.SetTextPosition(100);
+                //r1.SetTextPosition(100);
                 c1.SetColor("FF0000");
 
                 table.GetRow(2).GetCell(2).SetText("only text");
@@ -79,7 +79,7 @@ namespace WinGenDocWord
 
         }
 
-        private static void CreateDocWordSubstitution (string pTempWordDoc)
+        private  void CreateDocWordSubstitution (string pTempWordDoc)
         {
             try
             {
@@ -91,6 +91,8 @@ namespace WinGenDocWord
                     foreach (XWPFParagraph paragraph in doc.Paragraphs)
                     {
                         string textParrafo = paragraph.Text;
+                        txtOutput.Text += textParrafo + Environment.NewLine;
+                        
                         /*
                         foreach (XWPFRun run in paragraph.Runs)
                         {
@@ -106,6 +108,7 @@ namespace WinGenDocWord
                     string ffname = Path.Combine(outputPath, "output.docx");
                     FileStream newFile = new FileStream(ffname, FileMode.Create);
                     doc.Write(newFile);
+                    MessageBox.Show("Archivo generado exitosamente!!!!");
                 }
 
             }
