@@ -1,5 +1,6 @@
 ﻿using NPOI.XWPF.UserModel;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -79,10 +80,35 @@ namespace WinGenDocWord
 
         }
 
-        private  void CreateDocWordSubstitution (string pTempWordDoc)
+        private static Hashtable CreateLexemes()
+        {
+            Hashtable res = null;
+            try
+            {
+                res = new Hashtable() {
+                    {"${fecha}", "" },
+                    {"${name}", "" },
+                    {"${total}", "" }
+                };
+                return res;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+        private static void CreateDocWordSubstitution(string pTempWordDoc)
         {
             try
             {
+                Hashtable lexemes = CreateLexemes();
+                lexemes["${fecha}"] = DateTime.Now.ToString("dd/MM/yyyy");
+                lexemes["${name}"] = "Juan Perez";
+                string montoStr = String.Format("{0:0.00;minus 0.00;zero}", 123.4567);
+                lexemes["${total}"] = montoStr;
                 string outputPath = Path.GetDirectoryName(pTempWordDoc);
                 string parrafo = string.Empty;
                 using (FileStream stream = File.OpenRead(pTempWordDoc))
@@ -90,14 +116,23 @@ namespace WinGenDocWord
                     XWPFDocument doc = new XWPFDocument(stream);
                     foreach (XWPFParagraph paragraph in doc.Paragraphs)
                     {
+
                         string textParrafo = paragraph.Text;
-                        txtOutput.Text += textParrafo + Environment.NewLine;
-                        
+                        if (textParrafo.Length > 0)
+                        {
+                            while (textParrafo.IndexOf("${fecha}", 0) >= 0)
+                            {
+                                string lex = (string)lexemes["${fecha}"];
+                                paragraph.ReplaceText("${fecha}", lex);
+                                textParrafo = paragraph.Text;
+                            }
+                        }
+
                         /*
                         foreach (XWPFRun run in paragraph.Runs)
                         {
                             parrafo = run.GetText(0);
-                            parrafo = parrafo.Replace("<%fecha>}", DateTime.Now.ToString("dd/MM/yyyy"));
+                            parrafo = parrafo.Replace("${fecha}", lexemes["${fecha}"]);
                             parrafo = parrafo.Replace("${name}", "John");
                             string montoStr = String.Format("{0:0.00;minus 0.00;zero}", 123.4567);
                             parrafo = parrafo.Replace("${total}", montoStr);
